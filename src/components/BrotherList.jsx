@@ -63,22 +63,22 @@ const BrotherList = () => {
               <td>{hermano.Apellido_hermano}</td>
               <td>{hermano.Activo ? 'Sí' : 'No'}</td>
               <td>{hermano.Comentarios}</td>
-              <td><i className="bi bi-eye-fill" onClick={() => openModal(hermano, 'details')} style={{ cursor: 'pointer' }}></i></td>
-              <td><i className="bi bi-pencil-fill"></i></td>
-              <td><i className="bi bi-trash-fill" onClick={() => openModal(hermano, 'delete')} style={{ cursor: 'pointer' }}></i></td>
+              <td><i className="bi bi-eye-fill" onClick={() => openModal(hermano, 'details')} style={{ cursor: 'pointer', color: 'purple'}}></i></td>
+              <td><i className="bi bi-pencil-fill" style={{ cursor: 'pointer', color: 'purple'}}></i></td>
+              <td><i className="bi bi-trash-fill" onClick={() => openModal(hermano, 'delete')} style={{ cursor: 'pointer', color: 'purple'}}></i></td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
 
-      {/* Modal de detalles o eliminación */}
+      {/* Modal de detalles y eliminación */}
       {showModal && (
         <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-              <h5 className="modal-title">{action === 'details' ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}` : 'Confirmar Eliminación'}</h5>
+              <h5 className="modal-title" style={{ cursor: 'pointer', color: 'purple'}}>{action === 'details' ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}` : 'Confirmar Eliminación'}</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
@@ -90,7 +90,7 @@ const BrotherList = () => {
                   </div>
                 )}
                 {action === 'delete' && (
-                  <p>¿Estás seguro de que deseas eliminar a <strong>{selectedBrother && `${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}`}</strong></p>
+                  <p>¿Está seguro de que deseas eliminar a <strong>{selectedBrother && `${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}`}</strong> de la lista?</p>
 
                 )}
               </div>
