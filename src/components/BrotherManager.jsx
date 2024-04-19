@@ -1,29 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BrotherManager = () => {
-  const [hermanos, setHermanos] = useState([]);
   const [formData, setFormData] = useState({
-    idHermano: null,
     Nombre_hermano: '',
     Apellido_hermano: '',
-    Genero: 'm',
+    Genero: '',
     Activo: false,
     Comentarios: ''
   });
-
-  useEffect(() => {
-    fetchHermanos();
-  }, []);
-
-  const fetchHermanos = async () => {
-    try {
-      const response = await axios.get('/hermanos');
-      setHermanos(response.data);
-    } catch (error) {
-      console.error('Error al obtener la lista de hermanos:', error);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,82 +25,67 @@ const BrotherManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (formData.idHermano) {
-        // Editar hermano
-        await axios.put(`/hermanos/${formData.idHermano}`, formData);
-      } else {
-        // Crear hermano
-        await axios.post('/hermanos', formData);
-      }
-      fetchHermanos();
+      await axios.post('http://localhost:5000/hermanos', formData); // Cambiar la URL si es diferente
       setFormData({
-        idHermano: null,
         Nombre_hermano: '',
         Apellido_hermano: '',
-        Genero: 'm',
+        Genero: '',
         Activo: false,
         Comentarios: ''
       });
+      toast.success('¡Hermano creado correctamente!');
     } catch (error) {
       console.error('Error al guardar el hermano:', error);
-    }
-  };
-
-  const handleEdit = (hermano) => {
-    setFormData(hermano);
-  };
-
-  const handleDelete = async (idHermano) => {
-    try {
-      await axios.delete(`/hermanos/${idHermano}`);
-      fetchHermanos();
-    } catch (error) {
-      console.error('Error al eliminar el hermano:', error);
+      toast.error('Hubo un error al crear el hermano. Por favor, inténtelo de nuevo.');
     }
   };
 
   return (
-    <div>
-      <h2>Gestión de Hermanos</h2>
+
+    <>
+    <h2 className='my-4 text-center fw-bold'>Gestión de Hermanos</h2>
+    <div className='container mb-4 d-flex justify-content-center'>
       <form onSubmit={handleSubmit}>
-        <label>
-          Nombre:
-          <input type="text" name="Nombre_hermano" value={formData.Nombre_hermano} onChange={handleInputChange} />
-        </label>
-        <label>
-          Apellido:
-          <input type="text" name="Apellido_hermano" value={formData.Apellido_hermano} onChange={handleInputChange} />
-        </label>
-        <label>
-          Género:
-          <select name="Genero" value={formData.Genero} onChange={handleInputChange}>
+        <div className="mb-3">
+          <label htmlFor="nombre" className="form-label">Nombre:</label>
+          <input type="text" className="form-control" id="nombre" name="Nombre_hermano" value={formData.Nombre_hermano} onChange={handleInputChange} style={{ width: '400px' }}/>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="apellido" className="form-label">Apellido:</label>
+          <input type="text" className="form-control" id="apellido" name="Apellido_hermano" value={formData.Apellido_hermano} onChange={handleInputChange} style={{ width: '400px' }}/>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="genero" className="form-label">Género:</label>
+          <select className="form-select" id="genero" name="Genero" value={formData.Genero} onChange={handleInputChange} style={{ width: '400px' }}>
+            <option value="">Seleccionar género</option>
             <option value="m">Masculino</option>
             <option value="f">Femenino</option>
           </select>
-        </label>
-        <label>
-          Activo:
-          <input type="checkbox" name="Activo" checked={formData.Activo} onChange={handleCheckboxChange} />
-        </label>
-        <label>
-          Comentarios:
-          <textarea name="Comentarios" value={formData.Comentarios} onChange={handleInputChange} />
-        </label>
-        <button type="submit">{formData.idHermano ? 'Actualizar' : 'Crear'}</button>
+        </div>
+        <div className="mb-3 form-check">
+          <input type="checkbox" className="form-check-input" id="activo" name="Activo" checked={formData.Activo} onChange={handleCheckboxChange} />
+          <label className="form-check-label" htmlFor="activo">Activo</label>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="comentarios" className="form-label">Comentarios:</label>
+          <textarea className="form-control" id="comentarios" name="Comentarios" value={formData.Comentarios} onChange={handleInputChange} style={{ width: '400px' }}/>
+        </div>
+        <div className='container mb-4 d-flex justify-content-center'>
+        <button type="submit" className="btn btn-primary">Crear Hermano</button>
+        </div>
       </form>
-      <ul>
-  {Array.isArray(hermanos) && hermanos.map((hermano) => (
-    <li key={hermano.idHermano}>
-      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-      <button onClick={() => handleEdit(hermano)}>Editar</button>
-      <button onClick={() => handleDelete(hermano.idHermano)}>Eliminar</button>
-    </li>
-  ))}
-</ul>
     </div>
+    </>
   );
 };
 
-export default BrotherManager;  
+export default BrotherManager;
+
+
+
+
+
+
+
 
 

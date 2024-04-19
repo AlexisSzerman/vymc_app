@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
 const BrotherList = () => {
@@ -35,8 +36,10 @@ const BrotherList = () => {
       await axios.delete(`http://localhost:5000/hermanos/${idHermano}`);
       fetchHermanos();
       setShowModal(false);
+       toast.success(`¡${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano} se ha eliminado exitosamente!`);
     } catch (error) {
       console.error('Error al eliminar el hermano:', error);
+      toast.error('Hubo un error al eliminar el hermano. Por favor, inténtelo de nuevo.');
     }
   };
 
@@ -78,14 +81,14 @@ const BrotherList = () => {
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-              <h5 className="modal-title" style={{ cursor: 'pointer', color: 'purple'}}>{action === 'details' ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}` : 'Confirmar Eliminación'}</h5>
+              <h5 className="modal-title" style={{color: 'purple'}}>{action === 'details' ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}` : 'Confirmar Eliminación'}</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
                 {action === 'details' && (
                   <div>
                     <p><strong>Responsabilidades: </strong>{selectedBrother.responsabilidades.join(', ')}</p>
-                    <p><strong>Asignaciones: </strong>{selectedBrother.asignaciones.join(', ')}</p>
+                    <p><strong>Asignaciones habilitadas: </strong>{selectedBrother.asignaciones.join(', ')}</p>
                     <p><strong>Comentarios: </strong>{selectedBrother.Comentarios}</p>
                   </div>
                 )}
@@ -109,6 +112,19 @@ const BrotherList = () => {
           </div>
         </div>
       )}
+      
+      <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss={false}
+      draggable
+      pauseOnHover={false}
+      theme="colored"/>
+      
     </div>
   );
 };
