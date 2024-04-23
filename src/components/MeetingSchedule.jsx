@@ -1,4 +1,25 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 const MeetingSchedule = () => {
+    
+    const [hermanos, setHermanos] = useState([]);
+    const [selectedParticipant, setSelectedParticipant] = useState({});
+  const numbers = Array.from({ length: 158 }, (_, index) => index + 1);
+
+  useEffect(() => {
+    fetchHermanos();
+  }, []);
+
+  const fetchHermanos = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/hermanos');
+      setHermanos(response.data);
+    } catch (error) {
+      console.error('Error al obtener la lista de hermanos:', error);
+    }
+  };
+
     return (
       <>
       <h2 className='my-4 text-center fw-bold'>Programa de la reunión</h2>
@@ -22,10 +43,24 @@ const MeetingSchedule = () => {
           <tr>
               <td></td>
               <td></td>
-              <td>19/04/2024</td>
+              <td className="fw-bold">19/04/2024</td>
               <td></td>
               <td>Presidente: </td>
-              <td>Nombre del Hermano</td>
+              <td>
+                <select 
+                  className="form-select form-select-sm" 
+                  aria-label=".form-select-sm example" 
+                  value={selectedParticipant}
+                  onChange={(e) => setSelectedParticipant(e.target.value)}
+                >
+                  <option>Seleccionar participante</option>
+                  {hermanos.map((hermano) => (
+                    <option key={hermano.idHermano} value={hermano.idHermano}>
+                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
+                    </option>
+                  ))}
+                </select>
+              </td>
             </tr>
             <tr>
               <td></td>
@@ -33,7 +68,21 @@ const MeetingSchedule = () => {
               <td>Salmo 23-28</td>
               <td></td>
               <td>Oración Inicial: </td>
-              <td>Nombre del Hermano</td>
+              <td>
+              <select 
+                  className="form-select form-select-sm" 
+                  aria-label=".form-select-sm example" 
+                  value={selectedParticipant}
+                  onChange={(e) => setSelectedParticipant(e.target.value)}
+                >
+                  <option>Seleccionar participante</option>
+                  {hermanos.map((hermano) => (
+                    <option key={hermano.idHermano} value={hermano.idHermano}>
+                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
+                    </option>
+                  ))}
+                </select>
+              </td>
             </tr>
             <tr>
               <td>19:30hs</td>
@@ -41,7 +90,14 @@ const MeetingSchedule = () => {
               <td></td>
               <td></td>
               <td>Canción de inicio</td>
-              <td>Número de la Canción</td>
+              <td>
+              <select className="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option>Seleccionar número</option>
+                  {numbers.map((number) => (
+                  <option key={number} value={number}>{number}</option>
+                  ))}
+            </select>
+              </td>
             </tr>
             <tr>
               <td>19:35hs</td>
@@ -67,7 +123,21 @@ const MeetingSchedule = () => {
               <td className="text-center fw-bold" style={{ color: '#3B7D8B' }}>1</td>
               <td>Discurso</td>
               <td>(10mins)</td>
-              <td className="text-center">Nombre del Hermano</td>
+              <td className="text-center">
+              <select 
+                  className="form-select form-select-sm" 
+                  aria-label=".form-select-sm example" 
+                  value={selectedParticipant}
+                  onChange={(e) => setSelectedParticipant(e.target.value)}
+                >
+                  <option>Seleccionar participante</option>
+                  {hermanos.map((hermano) => (
+                    <option key={hermano.idHermano} value={hermano.idHermano}>
+                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
+                    </option>
+                  ))}
+                </select>
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -75,7 +145,21 @@ const MeetingSchedule = () => {
               <td className="text-center fw-bold" style={{ color: '#3B7D8B' }}>2</td>
               <td>Busquemos perlas escondidas</td>
               <td>(10mins)</td>
-              <td className="text-center">Nombre del Hermano</td>
+              <td className="text-center">
+              <select 
+                  className="form-select form-select-sm" 
+                  aria-label=".form-select-sm example" 
+                  value={selectedParticipant}
+                  onChange={(e) => setSelectedParticipant(e.target.value)}
+                >
+                  <option>Seleccionar participante</option>
+                  {hermanos.map((hermano) => (
+                    <option key={hermano.idHermano} value={hermano.idHermano}>
+                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
+                    </option>
+                  ))}
+                </select>
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -83,8 +167,36 @@ const MeetingSchedule = () => {
               <td className="text-center fw-bold" style={{ color: '#3B7D8B' }}>3</td>
               <td>Lectura de la Biblia</td>
               <td>(4mins)</td>
-              <td className="text-center">Nombre del Hermano</td>
-              <td className="text-center">Nombre del Hermano</td>
+              <td className="text-center">
+              <select 
+                  className="form-select form-select-sm" 
+                  aria-label=".form-select-sm example" 
+                  value={selectedParticipant}
+                  onChange={(e) => setSelectedParticipant(e.target.value)}
+                >
+                  <option>Seleccionar participante</option>
+                  {hermanos.map((hermano) => (
+                    <option key={hermano.idHermano} value={hermano.idHermano}>
+                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td className="text-center">
+              <select 
+                  className="form-select form-select-sm" 
+                  aria-label=".form-select-sm example" 
+                  value={selectedParticipant}
+                  onChange={(e) => setSelectedParticipant(e.target.value)}
+                >
+                  <option>Seleccionar participante</option>
+                  {hermanos.map((hermano) => (
+                    <option key={hermano.idHermano} value={hermano.idHermano}>
+                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
+                    </option>
+                  ))}
+                </select>
+              </td>
             </tr>
             <tr>
             <td><img src="src/assets/smm_ico.svg" alt="" style={{ width: '2.5rem' }}/></td>

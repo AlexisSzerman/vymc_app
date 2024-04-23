@@ -15,7 +15,7 @@ function App() {
     </div>
 {/*         <BrotherManager />
         <BrotherList /> */}
-        <MeetingSchedule/>
+         <MeetingSchedule/>
     </>
 
   );
