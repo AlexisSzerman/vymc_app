@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const BrotherManager = () => {
@@ -75,7 +75,20 @@ const BrotherManager = () => {
         </div>
       </form>
     </div>
+
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss={false}
+      draggable
+      pauseOnHover={false}
+      theme="colored"/>
     </>
+    
   );
 };
 

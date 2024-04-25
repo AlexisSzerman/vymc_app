@@ -45,7 +45,7 @@ const BrotherList = () => {
 
   return (
     <div className='container mb-4'>
-    <h2 className='my-4 text-center fw-bold'>Lista de Hermanos</h2>
+    <h2 className='my-4 text-center fw-bold'>Listado de Hermanos</h2>
     <div className='container'>
       <table className="table table-hover">
         <thead>
@@ -103,8 +103,8 @@ const BrotherList = () => {
                 )}
                 {action === 'delete' && (
                   <div>
-                    <button type="button" className="btn btn-danger m-2" onClick={() => eliminarHermano(selectedBrother.idHermano)}>Eliminar</button>
                     <button type="button" className="btn btn-secondary" onClick={closeModal}>Cancelar</button>
+                    <button type="button" className="btn btn-danger m-2" onClick={() => eliminarHermano(selectedBrother.idHermano)}>Eliminar</button>
                   </div>
                 )}
               </div>
@@ -124,8 +124,8 @@ const BrotherList = () => {
       draggable
       pauseOnHover={false}
       theme="colored"/>
-      
     </div>
+      
   );
 };
 
