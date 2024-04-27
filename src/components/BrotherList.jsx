@@ -66,9 +66,9 @@ const BrotherList = () => {
               <td>{hermano.Apellido_hermano}</td>
               <td>{hermano.Activo ? 'Sí' : 'No'}</td>
               <td>{hermano.Comentarios}</td>
-              <td><i className="bi bi-eye-fill" onClick={() => openModal(hermano, 'details')} style={{ cursor: 'pointer', color: 'purple'}}></i></td>
-              <td><i className="bi bi-pencil-fill" style={{ cursor: 'pointer', color: 'purple'}}></i></td>
-              <td><i className="bi bi-trash-fill" onClick={() => openModal(hermano, 'delete')} style={{ cursor: 'pointer', color: 'purple'}}></i></td>
+              <td><i className="bi bi-eye-fill" onClick={() => openModal(hermano, 'details')} style={{ cursor: 'pointer', color: 'grey'}}></i></td>
+              <td><i className="bi bi-pencil-fill" style={{ cursor: 'pointer', color: 'grey'}}></i></td>
+              <td><i className="bi bi-trash-fill" onClick={() => openModal(hermano, 'delete')} style={{ cursor: 'pointer', color: 'grey'}}></i></td>
             </tr>
           ))}
         </tbody>
@@ -81,7 +81,7 @@ const BrotherList = () => {
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-              <h5 className="modal-title" style={{color: 'purple'}}>{action === 'details' ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}` : 'Confirmar Eliminación'}</h5>
+              <h5 className="modal-title">{action === 'details' ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}` : 'Confirmar Eliminación'}</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
@@ -99,11 +99,11 @@ const BrotherList = () => {
               </div>
               <div className="modal-footer">
                 {action === 'details' && (
-                  <button type="button" className="btn btn-secondary" onClick={closeModal}>Cerrar</button>
+                  <button type="button" className="btn btn-outline-secondary" onClick={closeModal}>Cerrar</button>
                 )}
                 {action === 'delete' && (
                   <div>
-                    <button type="button" className="btn btn-secondary" onClick={closeModal}>Cancelar</button>
+                    <button type="button" className="btn btn-outline-secondary" onClick={closeModal}>Cancelar</button>
                     <button type="button" className="btn btn-danger m-2" onClick={() => eliminarHermano(selectedBrother.idHermano)}>Eliminar</button>
                   </div>
                 )}

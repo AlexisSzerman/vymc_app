@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import BrotherManager from './components/BrotherManager';
 import BrotherList from './components/BrotherList';
 import Welcome from './components/Welcome';
@@ -10,8 +10,16 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <Router>
+      <nav className="navbar bg-light">
+        <form className="container-fluid justify-content-start">
+          <Link to="/" className="btn btn-outline-success me-2" type="button">Home</Link>
+          <Link to="/brother-manager" className="btn btn-outline-primary me-2" type="button">Añadir Hermano</Link>
+          <Link to="/brother-list" className="btn btn-outline-primary me-2" type="button">Estudiantes</Link>
+          <Link to="/meeting-schedule" className="btn btn-outline-primary me-2" type="button">Programa</Link>
+        </form>
+      </nav>
       <Routes>
-        <Route path="/" exact element={<Welcome/>} />
+        <Route path="/" element={<Welcome/>} />
         <Route path="/brother-manager" element={<BrotherManager/>} />
         <Route path="/brother-list" element={<BrotherList/>} />
         <Route path="/meeting-schedule" element={<MeetingSchedule/>} />
@@ -21,5 +29,6 @@ function App() {
 }
 
 export default App;
+
 
 

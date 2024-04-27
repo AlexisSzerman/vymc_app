@@ -21,6 +21,35 @@ def obtener_asignaciones_hermano(id_hermano):
     conn.close()
     return [asignacion[0] for asignacion in asignaciones]
 
+# Mapeo de nombres de responsabilidades a IDs
+responsabilidades_mapping = {
+    'Anciano': 1,
+    'Siervo Ministerial': 2,
+    'Precursor': 3,
+    'Publicador Bautizado': 4,
+    'Publicador no Bautizado': 5
+}
+
+# Mapeo de nombres de asignaciones a IDs
+asignaciones_mapping = {
+    'Presidencia': 1,
+    'Oración': 2,
+    'Tesoros de la Biblia': 3,
+    'Perlas Escondidas': 4,
+    'Lectura de la Biblia': 5,
+    'Empiece Conversaciones': 6,
+    'Haga Revisitas': 7,
+    'Haga Discípulos': 8,
+    'Explique Creencias': 9,
+    'Amo/a de casa': 10,
+    'Discurso': 11,
+    'Análisis Seamos Mejores Maestros': 12,
+    'Nuestra Vida Cristiana': 13,
+    'Estudio Bíblico de congregación': 14,
+    'Lectura libro': 15,
+    'Necesidades de la congregación': 16
+}
+
 @app.route('/hermanos', methods=['GET', 'POST'])
 def gestionar_hermanos():
     if request.method == 'GET':
@@ -56,10 +85,27 @@ def gestionar_hermanos():
         activo = data.get('Activo')
         comentarios = data.get('Comentarios')
 
-        # Guardar los datos en la base de datos
+        # Obtener las responsabilidades seleccionadas y mapearlas a sus respectivos IDs
+        responsabilidades_seleccionadas = data.get('Responsabilidades', [])
+        responsabilidades_ids = [responsabilidades_mapping[responsabilidad] for responsabilidad in responsabilidades_seleccionadas]
+
+        # Obtener las asignaciones seleccionadas y mapearlas a sus respectivos IDs
+        asignaciones_seleccionadas = data.get('Asignaciones', [])
+        asignaciones_ids = [asignaciones_mapping[asignacion] for asignacion in asignaciones_seleccionadas]
+
+        # Guardar los datos del hermano en la tabla Hermanos
         conn = sqlite3.connect('db/vymc.db')
         cursor = conn.cursor()
         cursor.execute('INSERT INTO Hermanos (Nombre_hermano, Apellido_hermano, Genero, Activo, Comentarios) VALUES (?, ?, ?, ?, ?)', (nombre, apellido, genero, activo, comentarios))
+        id_hermano = cursor.lastrowid
+
+        # Insertar los registros en las tablas de relaciones
+        for responsabilidad_id in responsabilidades_ids:
+            cursor.execute('INSERT INTO Responsabilidades_hermanos (idHermano, idResp) VALUES (?, ?)', (id_hermano, responsabilidad_id))
+
+        for asignacion_id in asignaciones_ids:
+            cursor.execute('INSERT INTO Asignaciones_hermanos (idHermano, idAsign) VALUES (?, ?)', (id_hermano, asignacion_id))
+
         conn.commit()
         conn.close()
 

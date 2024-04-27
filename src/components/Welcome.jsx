@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+
 
 function Welcome() {
   return (
-    <div className="container text-center">
+    <>
+      <div className="container text-center">
       <div>
         <img
           src="../src/assets/react.svg"
@@ -12,20 +13,11 @@ function Welcome() {
         />
       </div>
       <h3 className="mt-5 fw-bold">Gestor de Vida y Ministerio Cristiano</h3>
-      <nav className="mt-4">
-        <ul className="list-unstyled ">
-          <li>
-            <Link className="text-decoration-none" to="/brother-manager">Crear y editar Hermanos</Link>
-          </li>
-          <li>
-            <Link className="text-decoration-none" to="/brother-list">Listado de Hermanos</Link>
-          </li>
-          <li>
-            <Link className="text-decoration-none" to="/meeting-schedule">Programa de Reuniones</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
+      <p className="fs-4">Aplicación ideada para poder llevar a cabo la tarea de Presidente de Vida y Ministerio Cristianos</p>
+      </div>
+    </>
+
+
   );
 }
 
