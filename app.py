@@ -1,12 +1,16 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
 CORS(app, resources={r"/hermanos/*": {"origins": "https://vymc-app.dev.ar"}})
 CORS(app, resources={r"/reuniones/*": {"origins": "https://vymc-app.dev.ar"}})
-""" CORS(app, resources={r"/hermanos/*": {"origins": "*"}}) """
-""" CORS(app, resources={r"/reuniones/*": {"origins": "*"}}) """
+""" CORS(app, resources={r"/hermanos/*": {"origins": "*"}})
+CORS(app, resources={r"/reuniones/*": {"origins": "*"}}) """
+
+@app.route('/')
+def index():
+    return send_from_directory('vymcapp', 'index.html')
 
 
 def obtener_responsabilidades_hermano(id_hermano):
@@ -150,7 +154,6 @@ def obtener_reuniones():
         reuniones_info.append(reunion_info)
 
     return jsonify(reuniones_info)
-
 
 
 if __name__ == '__main__':
