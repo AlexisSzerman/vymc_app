@@ -3,14 +3,10 @@ from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
-CORS(app, resources={r"/hermanos/*": {"origins": "https://vymc-app.dev.ar"}})
-CORS(app, resources={r"/reuniones/*": {"origins": "https://vymc-app.dev.ar"}})
-""" CORS(app, resources={r"/hermanos/*": {"origins": "*"}})
-CORS(app, resources={r"/reuniones/*": {"origins": "*"}}) """
 
-@app.route('/')
-def index():
-    return send_from_directory('vymcapp', 'index.html')
+CORS(app, resources={r"/hermanos/*": {"origins": "*"}})
+CORS(app, resources={r"/reuniones/*": {"origins": "*"}})
+
 
 
 def obtener_responsabilidades_hermano(id_hermano):
