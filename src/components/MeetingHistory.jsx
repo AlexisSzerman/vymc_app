@@ -164,7 +164,8 @@ const MeetingHistory = () => {
         <div className="col-md-4">
           <input type="text" name="hermano" value={filtro.hermano} onChange={handleChange} placeholder="Buscar Hermano/a" className="form-control mb-2" />
         </div>
-{/*         <div className="col-md-2">
+{/*   Para busqueda por titular ayudante, es necesario?
+      <div className="col-md-2">
           <input type="text" name="titular" value={filtro.titular} onChange={handleChange} placeholder="Buscar Titular" className="form-control mb-2" />
         </div>
         <div className="col-md-2">
