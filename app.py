@@ -4,6 +4,8 @@ import sqlite3
 
 app = Flask(__name__)
 CORS(app, resources={r"/hermanos/*": {"origins": "*"}})
+CORS(app, resources={r"/reuniones/*": {"origins": "*"}})
+
 
 def obtener_responsabilidades_hermano(id_hermano):
     conn = sqlite3.connect('db/vymc.db')
@@ -78,7 +80,6 @@ def gestionar_hermanos():
         return jsonify(hermanos_con_responsabilidades)
     elif request.method == 'POST':
         data = request.json
-        # Extraer datos del formulario
         nombre = data.get('Nombre_hermano')
         apellido = data.get('Apellido_hermano')
         genero = data.get('Genero')
@@ -119,6 +120,36 @@ def eliminar_hermano(id_hermano):
     conn.commit()
     conn.close()
     return jsonify({'message': 'Hermano eliminado correctamente'}), 200
+
+@app.route('/reuniones', methods=['GET'])
+def obtener_reuniones():
+    conn = sqlite3.connect('db/vymc.db')
+    cursor = conn.cursor()
+    cursor.execute("""SELECT Reuniones.Fecha, Reuniones.Sala, 
+                    Asignaciones.Nombre_asign AS Asignacion, 
+                    Hermanos_titular.Nombre_hermano || ' ' || Hermanos_titular.Apellido_hermano AS Titular, 
+                    CASE WHEN Reuniones.Ayudante IS NULL THEN ' ' ELSE Hermanos_suplente.Nombre_hermano || ' ' || Hermanos_suplente.Apellido_hermano END AS Ayudante 
+                    FROM Reuniones 
+                    INNER JOIN Asignaciones ON Reuniones.IdAsign = Asignaciones.IdAsign 
+                    INNER JOIN Hermanos AS Hermanos_titular ON Reuniones.IdHermano = Hermanos_titular.IdHermano 
+                    LEFT JOIN Hermanos AS Hermanos_suplente ON Reuniones.Ayudante = Hermanos_suplente.IdHermano""")
+    reuniones = cursor.fetchall()
+    conn.close()
+
+    reuniones_info = []
+    for reunion in reuniones:
+        reunion_info = {
+            'Fecha': reunion[0],
+            'Sala': reunion[1],
+            'Asignacion': reunion[2],
+            'Titular': reunion[3],
+            'Ayudante': reunion[4]
+        }
+        reuniones_info.append(reunion_info)
+
+    return jsonify(reuniones_info)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

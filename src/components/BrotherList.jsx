@@ -45,10 +45,10 @@ const BrotherList = () => {
 
   return (
     <div className='container mb-4'>
-    <h2 className='my-4 text-center fw-bold'>Listado de Hermanos</h2>
+    <h2 className='my-4 text-center fw-bold'>Listado de Estudiantes</h2>
     <div className='container'>
-      <table className="table table-hover">
-        <thead>
+      <table className="table table-bordered table-hover">
+        <thead className='table-secondary'>
           <tr className='text-center'>
             <th>Nombre</th>
             <th>Apellido</th>
@@ -72,6 +72,8 @@ const BrotherList = () => {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+        </tfoot>
       </table>
     </div>
 

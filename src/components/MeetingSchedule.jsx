@@ -43,7 +43,10 @@ const MeetingSchedule = () => {
           <tr>
               <td></td>
               <td></td>
-              <td className="fw-bold">19/04/2024</td>
+              <td className="fw-bold">
+                <input type="date" id="birthday" name="birthday"/>
+
+              </td>
               <td></td>
               <td>Presidente: </td>
               <td>

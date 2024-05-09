@@ -65,7 +65,7 @@ const BrotherManager = () => {
   return (
 
     <>
-    <h2 className='my-4 text-center fw-bold'>Gestión de Hermanos</h2>
+    <h2 className='my-4 text-center fw-bold'>Añadir Hermanos</h2>
     <div className='container mb-4 d-flex justify-content-center'>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
