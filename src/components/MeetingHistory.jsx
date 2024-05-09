@@ -161,7 +161,7 @@ const MeetingHistory = () => {
     <div className='container mb-4'>
       <h2 className='my-4 text-center fw-bold'>Historial de Reuniones</h2>
       <div className="row mb-3 justify-content-center">
-        <div className="col-md-2">
+        <div className="col-md-4">
           <input type="text" name="hermano" value={filtro.hermano} onChange={handleChange} placeholder="Buscar Hermano/a" className="form-control mb-2" />
         </div>
 {/*         <div className="col-md-2">

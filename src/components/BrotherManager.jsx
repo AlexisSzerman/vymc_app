@@ -43,24 +43,27 @@ const BrotherManager = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post('http://localhost:5000/hermanos', formData);
-            setFormData({
-                Nombre_hermano: '',
-                Apellido_hermano: '',
-                Genero: '',
-                Activo: false,
-                Comentarios: '',
-                Responsabilidades: [],
-                Asignaciones: []
-            });
-            toast.success('¡Hermano creado correctamente!');
-        } catch (error) {
-          console.error('Error al guardar el hermano:', error);
-          toast.error('Hubo un error al crear el hermano. Por favor, inténtelo de nuevo.');
-        }
-    };
+      e.preventDefault();
+      try {
+          await axios.post('http://localhost:5000/hermanos', formData);
+          setFormData({
+              Nombre_hermano: '',
+              Apellido_hermano: '',
+              Genero: '',
+              Activo: false,
+              Comentarios: '',
+              Responsabilidades: [],
+              Asignaciones: []
+          });
+          // Desactivar todos los checkboxes
+          const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          checkboxes.forEach(checkbox => checkbox.checked = false);
+          toast.success('¡Hermano creado correctamente!');
+      } catch (error) {
+        console.error('Error al guardar el hermano:', error);
+        toast.error('Hubo un error al crear el hermano. Por favor, inténtelo de nuevo.');
+      }
+  };
 
   return (
 
