@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import ParticipantSelect from './ParticipantSelect';
 
 const MeetingSchedule = () => {
     
     const [hermanos, setHermanos] = useState([]);
-    const [selectedParticipant, setSelectedParticipant] = useState({});
+    const [selectedParticipants, setSelectedParticipants] = useState({});
   const numbers = Array.from({ length: 158 }, (_, index) => index + 1);
 
   useEffect(() => {
@@ -19,6 +20,12 @@ const MeetingSchedule = () => {
       console.error('Error al obtener la lista de hermanos:', error);
     }
   };
+  const handleChange = (id, value) => {
+    setSelectedParticipants(prev => ({
+        ...prev,
+        [id]: value
+    }));
+};
 
     return (
       <>
@@ -50,19 +57,12 @@ const MeetingSchedule = () => {
               <td></td>
               <td>Presidente: </td>
               <td>
-                <select 
-                  className="form-select form-select-sm" 
-                  aria-label=".form-select-sm example" 
-                  value={selectedParticipant}
-                  onChange={(e) => setSelectedParticipant(e.target.value)}
-                >
-                  <option>Seleccionar participante</option>
-                  {hermanos.map((hermano) => (
-                    <option key={hermano.idHermano} value={hermano.idHermano}>
-                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-                    </option>
-                  ))}
-                </select>
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Presidencia'] || ''}
+                onChange={e => handleChange('Presidencia', e.target.value)}
+                id="Presidencia"
+              />
               </td>
             </tr>
             <tr>
@@ -72,19 +72,12 @@ const MeetingSchedule = () => {
               <td></td>
               <td>Oración Inicial: </td>
               <td>
-              <select 
-                  className="form-select form-select-sm" 
-                  aria-label=".form-select-sm example" 
-                  value={selectedParticipant}
-                  onChange={(e) => setSelectedParticipant(e.target.value)}
-                >
-                  <option>Seleccionar participante</option>
-                  {hermanos.map((hermano) => (
-                    <option key={hermano.idHermano} value={hermano.idHermano}>
-                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-                    </option>
-                  ))}
-                </select>
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Oración'] || ''}
+                onChange={e => handleChange('Oración', e.target.value)}
+                id="Oración"
+              />
               </td>
             </tr>
             <tr>
@@ -127,19 +120,12 @@ const MeetingSchedule = () => {
               <td>Discurso</td>
               <td>(10mins)</td>
               <td className="text-center">
-              <select 
-                  className="form-select form-select-sm" 
-                  aria-label=".form-select-sm example" 
-                  value={selectedParticipant}
-                  onChange={(e) => setSelectedParticipant(e.target.value)}
-                >
-                  <option>Seleccionar participante</option>
-                  {hermanos.map((hermano) => (
-                    <option key={hermano.idHermano} value={hermano.idHermano}>
-                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-                    </option>
-                  ))}
-                </select>
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Tesoros de la Biblia'] || ''}
+                onChange={e => handleChange('Tesoros de la Biblia', e.target.value)}
+                id="Tesoros de la Biblia"
+              />
               </td>
               <td></td>
             </tr>
@@ -149,19 +135,12 @@ const MeetingSchedule = () => {
               <td>Busquemos perlas escondidas</td>
               <td>(10mins)</td>
               <td className="text-center">
-              <select 
-                  className="form-select form-select-sm" 
-                  aria-label=".form-select-sm example" 
-                  value={selectedParticipant}
-                  onChange={(e) => setSelectedParticipant(e.target.value)}
-                >
-                  <option>Seleccionar participante</option>
-                  {hermanos.map((hermano) => (
-                    <option key={hermano.idHermano} value={hermano.idHermano}>
-                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-                    </option>
-                  ))}
-                </select>
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Perlas Escondidas'] || ''}
+                onChange={e => handleChange('Perlas Escondidas', e.target.value)}
+                id="Perlas Escondidas"
+              />
               </td>
               <td></td>
             </tr>
@@ -171,34 +150,20 @@ const MeetingSchedule = () => {
               <td>Lectura de la Biblia</td>
               <td>(4mins)</td>
               <td className="text-center">
-              <select 
-                  className="form-select form-select-sm" 
-                  aria-label=".form-select-sm example" 
-                  value={selectedParticipant}
-                  onChange={(e) => setSelectedParticipant(e.target.value)}
-                >
-                  <option>Seleccionar participante</option>
-                  {hermanos.map((hermano) => (
-                    <option key={hermano.idHermano} value={hermano.idHermano}>
-                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-                    </option>
-                  ))}
-                </select>
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Lectura de la Biblia - A'] || ''}
+                onChange={e => handleChange('Lectura de la Biblia - A', e.target.value)}
+                id="Lectura de la Biblia - A"
+              />
               </td>
               <td className="text-center">
-              <select 
-                  className="form-select form-select-sm" 
-                  aria-label=".form-select-sm example" 
-                  value={selectedParticipant}
-                  onChange={(e) => setSelectedParticipant(e.target.value)}
-                >
-                  <option>Seleccionar participante</option>
-                  {hermanos.map((hermano) => (
-                    <option key={hermano.idHermano} value={hermano.idHermano}>
-                      {hermano.Nombre_hermano} {hermano.Apellido_hermano}
-                    </option>
-                  ))}
-                </select>
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Lectura de la Biblia - B'] || ''}
+                onChange={e => handleChange('Lectura de la Biblia - B', e.target.value)}
+                id="Lectura de la Biblia - B"
+              />
               </td>
             </tr>
             <tr>
@@ -210,16 +175,44 @@ const MeetingSchedule = () => {
               <td className="text-center fw-bold" style={{ color: '#D78D06' }}>4</td>
               <td>Empiece Conversaciones</td>
               <td>(3mins)</td>
-              <td className="text-center">Nombre del Hermano A</td>
-              <td className="text-center">Nombre del Hermano B</td>
+              <td className="text-center">
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Empiece Conversaciones - A'] || ''}
+                onChange={e => handleChange('Empiece Conversaciones - A', e.target.value)}
+                id="Empiece Conversaciones - A"
+              />
+              </td>
+              <td className="text-center">
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Empiece Conversaciones - B'] || ''}
+                onChange={e => handleChange('Empiece Conversaciones - B', e.target.value)}
+                id="Empiece Conversaciones - B"
+              />
+              </td>
             </tr>
             <tr>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td className="text-center">Ayudante del Hermano A</td>
-              <td className="text-center">Ayudante del Hermano B</td>
+              <td className="text-center">
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Empiece Conversaciones Ayudante - A'] || ''}
+                onChange={e => handleChange('Empiece Conversaciones Ayudante - A', e.target.value)}
+                id="Empiece Conversaciones Ayudante - A"
+              />
+              </td>
+              <td className="text-center">
+              <ParticipantSelect 
+                participants={hermanos}
+                value={selectedParticipants['Empiece Conversaciones Ayudante - B'] || ''}
+                onChange={e => handleChange('Empiece Conversaciones Ayudante - B', e.target.value)}
+                id="Empiece Conversaciones Ayudante - B"
+              />
+              </td>
             </tr>
             <tr>
               <td>20:09hs</td>
@@ -301,9 +294,9 @@ const MeetingSchedule = () => {
         </table>
       </div>
       </>
+
     )
   }
-  
   export default MeetingSchedule
   
   
