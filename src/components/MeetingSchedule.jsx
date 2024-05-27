@@ -1,302 +1,189 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import ParticipantSelect from './ParticipantSelect';
-
-const MeetingSchedule = () => {
-    
-    const [hermanos, setHermanos] = useState([]);
-    const [selectedParticipants, setSelectedParticipants] = useState({});
-  const numbers = Array.from({ length: 158 }, (_, index) => index + 1);
-
-  useEffect(() => {
-    fetchHermanos();
-  }, []);
-
-  const fetchHermanos = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/hermanos');
-      setHermanos(response.data);
-    } catch (error) {
-      console.error('Error al obtener la lista de hermanos:', error);
-    }
-  };
-  const handleChange = (id, value) => {
-    setSelectedParticipants(prev => ({
-        ...prev,
-        [id]: value
-    }));
-};
-
-    return (
-      <>
-      <h2 className='my-4 text-center fw-bold'>Programa de la reunión</h2>
-      <div className="container">
-        <h3 className="mb-4">Cong. Plaza de la Misericordia</h3>
-        <h2 className="mb-4">Programa para la reunión de entre semana</h2>
+  import { useState, useEffect } from 'react';
+  import axios from 'axios';
+  import ParticipantSelect from './ParticipantSelect';
+  import { ToastContainer, toast } from 'react-toastify';
   
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col" className="col-auto"></th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-              
+  const MeetingSchedule = () => {
+    const [hermanos, setHermanos] = useState([]);
+    const [rows, setRows] = useState([
+      {
+        fecha: '',
+        sala: '',
+        asignacion: '',
+        titular: '',
+        ayudante: '',
+      },
+    ]);
+  
+    const salas = ['A', 'B'];
+    const asignaciones = [
+      'Presidencia',
+      'Oración',
+      'Tesoros de la Biblia',
+      'Perlas Escondidas',
+      'Lectura de la Biblia',
+      'Empiece Conversaciones',
+      'Haga Revisitas',
+      'Haga Discípulos',
+      'Explique Creencias',
+      'Amo/a de casa',
+      'Discurso',
+      'Análisis Seamos Mejores Maestros',
+      'Nuestra Vida Cristiana',
+      'Estudio Bíblico de congregación',
+      'Lectura libro',
+      'Necesidades de la congregación',
+    ];
+  
+    useEffect(() => {
+      fetchHermanos();
+    }, []);
+  
+    const fetchHermanos = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/hermanos');
+        setHermanos(response.data);
+      } catch (error) {
+        console.error('Error al obtener la lista de hermanos:', error);
+      }
+    };
+  
+    const handleChange = (index, field, value) => {
+      const updatedRows = rows.map((row, i) =>
+        i === index ? { ...row, [field]: value } : row
+      );
+      setRows(updatedRows);
+    };
+  
+    const addNewRow = () => {
+      setRows([
+        ...rows,
+        {
+          fecha: '',
+          sala: '',
+          asignacion: '',
+          titular: '',
+          ayudante: '',
+        },
+      ]);
+    };
+  
+    const saveMeetings = async () => {
+      try {
+        const response = await axios.post('http://localhost:5000/reuniones', {
+          reuniones: rows,
+        });
+        toast.success('¡Reunión creada correctamente!');
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error al guardar las reuniones:', error);
+        toast.error('Error al guardar las reuniones');
+      }
+    };
+  
+    return (
+      <div className='container'>
+      <h2 className='my-4 text-center fw-bold'>Crear programa de la reunión</h2>
+        <table className='table table-bordered table-hover'>
+          <thead className='table-secondary'>
+            <tr className='text-center'>
+              <th>Fecha</th>
+              <th>Sala</th>
+              <th>Asignación</th>
+              <th>Titular</th>
+              <th>Ayudante</th>
             </tr>
           </thead>
-          <tbody>
-          <tr>
-              <td></td>
-              <td></td>
-              <td className="fw-bold">
-                <input type="date" id="birthday" name="birthday"/>
-
-              </td>
-              <td></td>
-              <td>Presidente: </td>
-              <td>
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Presidencia'] || ''}
-                onChange={e => handleChange('Presidencia', e.target.value)}
-                id="Presidencia"
-              />
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>Salmo 23-28</td>
-              <td></td>
-              <td>Oración Inicial: </td>
-              <td>
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Oración'] || ''}
-                onChange={e => handleChange('Oración', e.target.value)}
-                id="Oración"
-              />
-              </td>
-            </tr>
-            <tr>
-              <td>19:30hs</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>Canción de inicio</td>
-              <td>
-              <select className="form-select form-select-sm" aria-label=".form-select-sm example">
-                <option>Seleccionar número</option>
-                  {numbers.map((number) => (
-                  <option key={number} value={number}>{number}</option>
-                  ))}
-            </select>
-              </td>
-            </tr>
-            <tr>
-              <td>19:35hs</td>
-              <td></td>
-              <td>Palabras de introducción</td>
-              <td>(1min.)</td>
-              <td colSpan="2"></td>
-            </tr>
-            <tr>
-                <td><img src="src/assets/tesoros_ico.svg" alt="" style={{ width: '2.5rem' }}/></td>
-                <td colSpan="5"><h2 style={{ color: '#3B7D8B' }} className="text-start fw-bold">TESOROS DE LA BIBLIA</h2></td>
-            </tr>
-            <tr className="text-center fw-bold">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>Sala Principal</td>
-              <td>Sala Auxiliar</td>
-            </tr>
-            <tr>
-              <td>19:40hs</td>
-              <td className="text-center fw-bold" style={{ color: '#3B7D8B' }}>1</td>
-              <td>Discurso</td>
-              <td>(10mins)</td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Tesoros de la Biblia'] || ''}
-                onChange={e => handleChange('Tesoros de la Biblia', e.target.value)}
-                id="Tesoros de la Biblia"
-              />
-              </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>19:50hs</td>
-              <td className="text-center fw-bold" style={{ color: '#3B7D8B' }}>2</td>
-              <td>Busquemos perlas escondidas</td>
-              <td>(10mins)</td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Perlas Escondidas'] || ''}
-                onChange={e => handleChange('Perlas Escondidas', e.target.value)}
-                id="Perlas Escondidas"
-              />
-              </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>20:00hs</td>
-              <td className="text-center fw-bold" style={{ color: '#3B7D8B' }}>3</td>
-              <td>Lectura de la Biblia</td>
-              <td>(4mins)</td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Lectura de la Biblia - A'] || ''}
-                onChange={e => handleChange('Lectura de la Biblia - A', e.target.value)}
-                id="Lectura de la Biblia - A"
-              />
-              </td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Lectura de la Biblia - B'] || ''}
-                onChange={e => handleChange('Lectura de la Biblia - B', e.target.value)}
-                id="Lectura de la Biblia - B"
-              />
-              </td>
-            </tr>
-            <tr>
-            <td><img src="src/assets/smm_ico.svg" alt="" style={{ width: '2.5rem' }}/></td>
-              <td colSpan="5"><h2 style={{ color: '#D78D06' }} className="text-start fw-bold">SEAMOS MEJORES MAESTROS</h2></td>
-            </tr>
-            <tr>
-              <td>20:05hs</td>
-              <td className="text-center fw-bold" style={{ color: '#D78D06' }}>4</td>
-              <td>Empiece Conversaciones</td>
-              <td>(3mins)</td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Empiece Conversaciones - A'] || ''}
-                onChange={e => handleChange('Empiece Conversaciones - A', e.target.value)}
-                id="Empiece Conversaciones - A"
-              />
-              </td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Empiece Conversaciones - B'] || ''}
-                onChange={e => handleChange('Empiece Conversaciones - B', e.target.value)}
-                id="Empiece Conversaciones - B"
-              />
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Empiece Conversaciones Ayudante - A'] || ''}
-                onChange={e => handleChange('Empiece Conversaciones Ayudante - A', e.target.value)}
-                id="Empiece Conversaciones Ayudante - A"
-              />
-              </td>
-              <td className="text-center">
-              <ParticipantSelect 
-                participants={hermanos}
-                value={selectedParticipants['Empiece Conversaciones Ayudante - B'] || ''}
-                onChange={e => handleChange('Empiece Conversaciones Ayudante - B', e.target.value)}
-                id="Empiece Conversaciones Ayudante - B"
-              />
-              </td>
-            </tr>
-            <tr>
-              <td>20:09hs</td>
-              <td className="text-center fw-bold" style={{ color: '#D78D06' }}>5</td>
-              <td>Haga Revisitas</td>
-              <td>(5mins)</td>
-              <td className="text-center">Nombre del Hermano A</td>
-              <td className="text-center">Nombre del Hermano B</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td className="text-center">Ayudante del Hermano A</td>
-              <td className="text-center">Ayudante del Hermano B</td>
-            </tr>
-            <tr>
-              <td>20:12hs</td>
-              <td className="text-center fw-bold" style={{ color: '#D78D06' }}>6</td>
-              <td>Discurso</td>
-              <td>(5mins)</td>
-              <td className="text-center">Nombre del Hermano A</td>
-              <td className="text-center">Nombre del Hermano B</td>
-            </tr>
-            <tr>
-            <td><img src="src/assets/nvc_ico.svg" alt="" style={{ width: '2.5rem' }} /></td>
-              <td colSpan="5"><h2 style={{ color: '#BF2E14' }} className="text-start fw-bold">NUESTRA VIDA CRISTIANA</h2></td>
-            </tr>
-            <tr>
-              <td>20:17hs</td>
-              <td className="text-center fw-bold" style={{ color: '#BF2E14' }}>7</td>
-              <td>Analisis con el auditorio</td>
-              <td>(5mins)</td>
-              <td className="text-center">Nombre del Hermano</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>20:22hs</td>
-              <td className="text-center fw-bold" style={{ color: '#BF2E14' }}>8</td>
-              <td>Necesidades de la congregación</td>
-              <td>(10mins)</td>
-              <td className="text-center">Nombre del Hermano </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>20:27hs</td>
-              <td className="text-center fw-bold" style={{ color: '#BF2E14' }}>9</td>
-              <td>Estudio bíblico de la congregación</td>
-              <td>(30mins)</td>
-              <td className="text-center">Nombre del Hermano </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>20:57hs</td>
-              <td></td>
-              <td>Palabras de conclusión</td>
-              <td>(3mins)</td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>21:00hs</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td className="text-center">Canción de conclusión</td>
-              <td className="text-center">Número de canción</td>
-            </tr>
-            <tr>
-              <td>21:05hs</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td className="text-center">Oración de conclusión</td>
-              <td className="text-center">Nombre del Hermano</td>
-            </tr>
+          <tbody className='text-center'>
+            {rows.map((row, index) => (
+              <tr key={index}>
+                <td>
+                  <input
+                    type='date'
+                    className='form-control'
+                    value={row.fecha}
+                    onChange={(e) => handleChange(index, 'fecha', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <select
+                    value={row.sala}
+                    className='form-select'
+                    onChange={(e) => handleChange(index, 'sala', e.target.value)}
+                  >
+                    <option value=''>Seleccione Sala</option>
+                    {salas.map((sala) => (
+                      <option key={sala} value={sala}>
+                        {sala}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <select
+                    value={row.asignacion}
+                    className='form-select'
+                    onChange={(e) =>
+                      handleChange(index, 'asignacion', e.target.value)
+                    }
+                  >
+                    <option value=''>Seleccione Asignación</option>
+                    {asignaciones.map((asignacion) => (
+                      <option key={asignacion} value={asignacion}>
+                        {asignacion}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <ParticipantSelect
+                    participants={hermanos}
+                    selected={row.titular}
+                    onChange={(value) => handleChange(index, 'titular', value)}
+                  />
+                </td>
+                <td>
+                  <ParticipantSelect
+                    participants={hermanos}
+                    selected={row.ayudante}
+                    onChange={(value) => handleChange(index, 'ayudante', value)}
+                  />
+                </td>
+              </tr>
+            ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan='5' className='text-center'>
+              <button className='btn btn-outline-primary' onClick={addNewRow}>
+                Añadir nueva fila <i className='bi bi-plus-square-fill'></i>
+              </button>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan='5' className='text-center'>
+                <button className='btn btn-outline-success' onClick={saveMeetings}>
+                  Guardar Reunión <i className='bi bi-floppy-fill'></i>
+                </button>
+              </td>
+            </tr>
+          </tfoot>
         </table>
-      </div>
-      </>
 
-    )
-  }
-  export default MeetingSchedule
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme="colored"/>
+      </div>
+    );
+    
+  };
   
-  
+  export default MeetingSchedule;
