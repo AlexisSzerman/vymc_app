@@ -43,6 +43,7 @@ const MeetingHistory = () => {
            (!ayudante || reunion.Ayudante.toLowerCase().includes(ayudante.toLowerCase())) &&
            (!hermano || reunion.Titular.toLowerCase().includes(hermano.toLowerCase()) || reunion.Ayudante.toLowerCase().includes(hermano.toLowerCase()));
   };
+  
 
   return (
     <div className='container mb-4'>
