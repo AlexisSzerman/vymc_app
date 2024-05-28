@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';  
 
-const BrotherManager = () => {
+const BrotherManager = ({ onBrotherCreated }) => {
     const [formData, setFormData] = useState({
         Nombre_hermano: '',
         Apellido_hermano: '',
@@ -58,17 +59,18 @@ const BrotherManager = () => {
           // Desactivar todos los checkboxes
           const checkboxes = document.querySelectorAll('input[type="checkbox"]');
           checkboxes.forEach(checkbox => checkbox.checked = false);
-          toast.success('¡Hermano creado correctamente!');
+          toast.success('¡Participante creado correctamente!👤');
+          onBrotherCreated(); 
       } catch (error) {
-        console.error('Error al guardar el hermano:', error);
-        toast.error('Hubo un error al crear el hermano. Por favor, inténtelo de nuevo.');
+        console.error('Error al guardar el participante:', error);
+        toast.error('Hubo un error al crear el participante. Por favor, inténtelo de nuevo.');
       }
   };
 
   return (
 
     <>
-    <h2 className='my-4 text-center fw-bold'>Añadir Hermanos</h2>
+    <h2 className='my-4 text-center fw-bold'>Añadir Participante</h2>
     <div className='container mb-4 d-flex justify-content-center'>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -279,21 +281,13 @@ const BrotherManager = () => {
         </div>
       </form>
     </div>
-
-    <ToastContainer
-      position="top-right"
-      autoClose={3000}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss={false}
-      draggable
-      pauseOnHover={false}
-      theme="colored"/>
     </>
     
   );
+};
+
+BrotherManager.propTypes = {
+  onBrotherCreated: PropTypes.func,
 };
 
 export default BrotherManager;

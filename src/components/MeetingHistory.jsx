@@ -43,7 +43,21 @@ const MeetingHistory = () => {
            (!ayudante || reunion.Ayudante.toLowerCase().includes(ayudante.toLowerCase())) &&
            (!hermano || reunion.Titular.toLowerCase().includes(hermano.toLowerCase()) || reunion.Ayudante.toLowerCase().includes(hermano.toLowerCase()));
   };
-  
+
+  const detectarRepetidos = () => {
+    const repetidos = {};
+    reuniones.forEach(reunion => {
+      const key = `${reunion.Fecha}-${reunion.Titular}`;
+      if (repetidos[key]) {
+        repetidos[key].count++;
+      } else {
+        repetidos[key] = { count: 1, reunion };
+      }
+    });
+    return repetidos;
+  };
+
+  const repetidos = detectarRepetidos();
 
   return (
     <div className='container mb-4'>
@@ -52,12 +66,6 @@ const MeetingHistory = () => {
         <div className="col-md-4">
           <input type="text" name="hermano" value={filtro.hermano} onChange={handleChange} placeholder="Buscar Hermano/a" className="form-control mb-2" />
         </div>
-{/*         <div className="col-md-2">
-          <input type="text" name="titular" value={filtro.titular} onChange={handleChange} placeholder="Buscar Titular" className="form-control mb-2" />
-        </div>
-        <div className="col-md-2">
-          <input type="text" name="ayudante" value={filtro.ayudante} onChange={handleChange} placeholder="Buscar Ayudante" className="form-control mb-2" />
-        </div> */}
         <div className="col-md-2">
           <select name="fecha" value={filtro.fecha} onChange={handleChange} className="form-select mb-2">
             <option value="">Seleccionar Fecha</option>
@@ -95,15 +103,19 @@ const MeetingHistory = () => {
             </tr>
           </thead>
           <tbody className='text-center'>
-            {reuniones.filter(filtrarReuniones).map((reunion, index) => (
-              <tr key={index}>
-                <td>{reunion.Fecha}</td>
-                <td>{reunion.Sala}</td>
-                <td>{reunion.Asignacion}</td>
-                <td>{reunion.Titular}</td>
-                <td>{reunion.Ayudante}</td>
-              </tr>
-            ))}
+            {reuniones.filter(filtrarReuniones).map((reunion, index) => {
+              const key = `${reunion.Fecha}-${reunion.Titular}`;
+              const isRepetido = repetidos[key] && repetidos[key].count > 1;
+              return (
+                <tr key={index} className={isRepetido ? 'table-danger' : ''}>
+                  <td>{reunion.Fecha}</td>
+                  <td>{reunion.Sala}</td>
+                  <td>{reunion.Asignacion}</td>
+                  <td>{reunion.Titular}</td>
+                  <td>{reunion.Ayudante}</td>
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
           </tfoot>
@@ -114,7 +126,6 @@ const MeetingHistory = () => {
 };
 
 export default MeetingHistory;
-
 
 
 

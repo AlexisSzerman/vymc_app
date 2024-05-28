@@ -47,13 +47,16 @@
         console.error('Error al obtener la lista de hermanos:', error);
       }
     };
-  
-    const handleChange = (index, field, value) => {
-      const updatedRows = rows.map((row, i) =>
-        i === index ? { ...row, [field]: value } : row
-      );
-      setRows(updatedRows);
+
+
+    const [selectedRow, setSelectedRow] = useState({}); // Agregar esta línea
+
+const handleChange = (index, field, value) => {
+      setSelectedRow({ ...selectedRow, [field]: value });
+      rows[index][field] = value; // Añade esta línea
     };
+  
+
   
     const addNewRow = () => {
       setRows([
@@ -67,7 +70,14 @@
         },
       ]);
     };
-  
+    const deleteRow = (index) => {
+      const row = rows[index]; // Añade una variable para almacenar la fila seleccionada
+      const updatedRows = [...rows];
+      updatedRows.splice(index, 1);
+      setRows(updatedRows);
+      row.splice(index, 1); // Añade esta línea
+    };
+
     const saveMeetings = async () => {
       try {
         const response = await axios.post('http://localhost:5000/reuniones', {
@@ -155,14 +165,15 @@
           <tfoot>
             <tr>
               <td colSpan='5' className='text-center'>
-              <button className='btn btn-outline-primary' onClick={addNewRow}>
-                Añadir nueva fila <i className='bi bi-plus-square-fill'></i>
+              <button className='btn btn-outline-primary m-2' onClick={addNewRow}>
+                Añadir fila <i className='bi bi-plus-square-fill'></i>
               </button>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan='5' className='text-center'>
-                <button className='btn btn-outline-success' onClick={saveMeetings}>
+              <button 
+                className='btn btn-outline-danger m-2' 
+                onClick={() => deleteRow(selectedRow)}>
+                Eliminar últ. fila<i className='bi bi-trash-fill'></i>
+             </button>
+              <button className='btn btn-outline-success' onClick={saveMeetings}>
                   Guardar Reunión <i className='bi bi-floppy-fill'></i>
                 </button>
               </td>
