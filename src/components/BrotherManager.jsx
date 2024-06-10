@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 
 const BrotherManager = ({ onBrotherCreated }) => {
     const [formData, setFormData] = useState({
-        Nombre_hermano: '',
-        Apellido_hermano: '',
-        Genero: '',
-        Activo: false,
-        Comentarios: '',
-        Responsabilidades: [],
-        Asignaciones: []
+        nombre_hermano: '',
+        apellido_hermano: '',
+        genero: '',
+        activo: false,
+        comentarios: '',
+        responsabilidades: [],
+        asignaciones: []
     });
 
     const handleCheckboxChange = (e) => {
@@ -28,18 +28,18 @@ const BrotherManager = ({ onBrotherCreated }) => {
     const handleResponsabilidadChange = (e) => {
         const { checked, value } = e.target;
         if (checked) {
-            setFormData({ ...formData, Responsabilidades: [...formData.Responsabilidades, value] });
+            setFormData({ ...formData, responsabilidades: [...formData.responsabilidades, value] });
         } else {
-            setFormData({ ...formData, Responsabilidades: formData.Responsabilidades.filter(resp => resp !== value) });
+            setFormData({ ...formData, responsabilidades: formData.responsabilidades.filter(resp => resp !== value) });
         }
     };
 
     const handleAsignacionChange = (e) => {
         const { checked, value } = e.target;
         if (checked) {
-            setFormData({ ...formData, Asignaciones: [...formData.Asignaciones, value] });
+            setFormData({ ...formData, asignaciones: [...formData.asignaciones, value] });
         } else {
-            setFormData({ ...formData, Asignaciones: formData.Asignaciones.filter(asign => asign !== value) });
+            setFormData({ ...formData, asignaciones: formData.asignaciones.filter(asign => asign !== value) });
         }
     };
 
@@ -48,13 +48,13 @@ const BrotherManager = ({ onBrotherCreated }) => {
       try {
           await axios.post('http://localhost:5000/hermanos', formData);
           setFormData({
-              Nombre_hermano: '',
-              Apellido_hermano: '',
-              Genero: '',
-              Activo: false,
-              Comentarios: '',
-              Responsabilidades: [],
-              Asignaciones: []
+              nombre_hermano: '',
+              apellido_hermano: '',
+              genero: '',
+              activo: false,
+              comentarios: '',
+              responsabilidades: [],
+              asignaciones: []
           });
           // Desactivar todos los checkboxes
           const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -75,19 +75,19 @@ const BrotherManager = ({ onBrotherCreated }) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label fw-bold">Nombre: </label>
-          <input type="text" className="form-control" id="nombre" name="Nombre_hermano" value={formData.Nombre_hermano} onChange={handleInputChange} style={{ width: '400px' }}/>
+          <input type="text" className="form-control" id="nombre" name="nombre_hermano" value={formData.nombre_hermano} onChange={handleInputChange} style={{ width: '400px' }}/>
         </div>
         <div className="mb-3">
           <label htmlFor="apellido" className="form-label fw-bold">Apellido: </label>
-          <input type="text" className="form-control" id="apellido" name="Apellido_hermano" value={formData.Apellido_hermano} onChange={handleInputChange} style={{ width: '400px' }}/>
+          <input type="text" className="form-control" id="apellido" name="apellido_hermano" value={formData.apellido_hermano} onChange={handleInputChange} style={{ width: '400px' }}/>
         </div>
         <div className="mb-3 form-check">
-          <input type="checkbox" className="form-check-input fw-bold" id="activo" name="Activo" checked={formData.Activo} onChange={handleCheckboxChange} />
+          <input type="checkbox" className="form-check-input fw-bold" id="activo" name="activo" checked={formData.activo} onChange={handleCheckboxChange} />
           <label className="form-check-label" htmlFor="activo">Activo</label>
         </div>
         <div className="mb-3">
           <label htmlFor="genero" className="form-label fw-bold">Género: </label>
-          <select className="form-select" id="genero" name="Genero" value={formData.Genero} onChange={handleInputChange} style={{ width: '400px' }}>
+          <select className="form-select" id="genero" name="genero" value={formData.genero} onChange={handleInputChange} style={{ width: '400px' }}>
             <option value="">Seleccionar género</option>
             <option value="m">Masculino</option>
             <option value="f">Femenino</option>

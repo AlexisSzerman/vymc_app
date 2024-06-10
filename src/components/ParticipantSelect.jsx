@@ -77,7 +77,7 @@ const ParticipantSelect = ({ participants, selected, onChange }) => {
           <ul>
             {appearances.map((appearance, index) => (
               <li key={index}>
-                <strong>Fecha:</strong> {appearance.Fecha}, <strong>Asignación:</strong> {appearance.Asignacion}, <strong>Sala:</strong> {appearance.Sala}, <strong>Titular:</strong> {appearance.Titular}, <strong>Ayudante:</strong> {appearance.Ayudante}
+                <strong>Fecha:</strong> {appearance.fecha}, <strong>Asignación:</strong> {appearance.asignacion}, <strong>Sala:</strong> {appearance.sala}, <strong>Titular:</strong> {appearance.titular}, <strong>Ayudante:</strong> {appearance.ayudante}
               </li>
             ))}
           </ul>
@@ -96,10 +96,10 @@ const ParticipantSelect = ({ participants, selected, onChange }) => {
         <option value="">Seleccione Participante</option>
         {participants.map((participant) => (
           <option
-            key={participant.idHermano}
-            value={`${participant.Nombre_hermano} ${participant.Apellido_hermano}`}
+            key={participant.id_hermano}
+            value={`${participant.nombre_hermano} ${participant.apellido_hermano}`}
           >
-            {`${participant.Nombre_hermano} ${participant.Apellido_hermano}`}
+            {`${participant.nombre_hermano} ${participant.apellido_hermano}`}
           </option>
         ))}
       </select>
@@ -110,9 +110,9 @@ const ParticipantSelect = ({ participants, selected, onChange }) => {
 ParticipantSelect.propTypes = {
   participants: PropTypes.arrayOf(
     PropTypes.shape({
-      idHermano: PropTypes.number.isRequired,
-      Nombre_hermano: PropTypes.string.isRequired,
-      Apellido_hermano: PropTypes.string.isRequired
+      id_hermano: PropTypes.number.isRequired,
+      nombre_hermano: PropTypes.string.isRequired,
+      apellido_hermano: PropTypes.string.isRequired
     })
   ).isRequired,
   selected: PropTypes.string,

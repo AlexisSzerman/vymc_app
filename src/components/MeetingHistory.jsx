@@ -19,6 +19,7 @@ const MeetingHistory = () => {
   const fetchReuniones = async () => {
     try {
       const response = await axios.get('http://localhost:5000/reuniones');
+      console.log('Datos obtenidos del backend:', response.data);  // Añadir mensaje de depuración
       setReuniones(response.data);
     } catch (error) {
       console.error('Error al obtener la lista de reuniones:', error);
@@ -58,6 +59,8 @@ const MeetingHistory = () => {
   };
 
   const repetidos = detectarRepetidos();
+
+  console.log('Reuniones después de aplicar el filtro:', reuniones.filter(filtrarReuniones));
 
   return (
     <div className='container mb-4'>
@@ -121,7 +124,7 @@ const MeetingHistory = () => {
           </tfoot>
         </table>
       </div>
-    </div>
+      </div>
   );
 };
 

@@ -70,13 +70,13 @@ const handleChange = (index, field, value) => {
         },
       ]);
     };
-    const deleteRow = (index) => {
+/*     const deleteRow = (index) => {
       const row = rows[index]; // Añade una variable para almacenar la fila seleccionada
       const updatedRows = [...rows];
       updatedRows.splice(index, 1);
       setRows(updatedRows);
       row.splice(index, 1); // Añade esta línea
-    };
+    }; */
 
     const saveMeetings = async () => {
       try {
@@ -168,11 +168,11 @@ const handleChange = (index, field, value) => {
               <button className='btn btn-outline-primary m-2' onClick={addNewRow}>
                 Añadir fila <i className='bi bi-plus-square-fill'></i>
               </button>
-              <button 
+{/*               <button 
                 className='btn btn-outline-danger m-2' 
                 onClick={() => deleteRow(selectedRow)}>
                 Eliminar últ. fila<i className='bi bi-trash-fill'></i>
-             </button>
+             </button> */}
               <button className='btn btn-outline-success' onClick={saveMeetings}>
                   Guardar Reunión <i className='bi bi-floppy-fill'></i>
                 </button>

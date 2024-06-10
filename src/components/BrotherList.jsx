@@ -34,12 +34,12 @@ const BrotherList = () => {
     setShowModal(false);
   };
 
-  const eliminarHermano = async (idHermano) => {
+  const eliminarHermano = async (id_hermano) => {
     try {
-      await axios.delete(`http://localhost:5000/hermanos/${idHermano}`);
+      await axios.delete(`http://localhost:5000/hermanos/${id_hermano}`);
       fetchHermanos();
       setShowModal(false);
-      toast.success(`¡${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano} se ha eliminado exitosamente!`);
+      toast.success(`¡${selectedBrother.nombre_hermano} ${selectedBrother.apellido_hermano} se ha eliminado exitosamente!`);
     } catch (error) {
       console.error('Error al eliminar el hermano:', error);
       toast.error('Hubo un error al eliminar el hermano. Por favor, inténtelo de nuevo.');
@@ -52,7 +52,7 @@ const BrotherList = () => {
   };
 
   const filteredHermanos = hermanos.filter((hermano) => {
-    const nombreCompleto = `${hermano.Nombre_hermano} ${hermano.Apellido_hermano}`;
+    const nombreCompleto = `${hermano.nombre_hermano} ${hermano.apellido_hermano}`;
     return nombreCompleto.toLowerCase().includes(filtro.hermano.toLowerCase());
   });
 
@@ -106,11 +106,11 @@ const BrotherList = () => {
               </thead>
               <tbody className='text-center'>
                 {filteredHermanos.map((hermano) => (
-                  <tr key={hermano.idHermano}>
-                    <td>{hermano.Nombre_hermano}</td>
-                    <td>{hermano.Apellido_hermano}</td>
-                    <td>{hermano.Activo ? 'Sí' : 'No'}</td>
-                    <td>{hermano.Comentarios}</td>
+                  <tr key={hermano.id_hermano}>
+                    <td>{hermano.nombre_hermano}</td>
+                    <td>{hermano.apellido_hermano}</td>
+                    <td>{hermano.activo ? 'Sí' : 'No'}</td>
+                    <td>{hermano.comentarios}</td>
                     <td>
                       <i className="bi bi-eye-fill" onClick={() => openModal(hermano, 'details')} style={{ cursor: 'pointer', color: 'grey' }}></i>
                     </td>
@@ -137,7 +137,7 @@ const BrotherList = () => {
               <div className="modal-header">
                 <h5 className="modal-title">
                   {action === 'details'
-                    ? `Detalles de ${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}`
+                    ? `Detalles de ${selectedBrother.nombre_hermano} ${selectedBrother.apellido_hermano}`
                     : 'Confirmar Eliminación'}
                 </h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
@@ -147,11 +147,11 @@ const BrotherList = () => {
                   <div>
                     <p><strong>Responsabilidades: </strong>{selectedBrother.responsabilidades.join(', ')}</p>
                     <p><strong>Asignaciones habilitadas: </strong>{selectedBrother.asignaciones.join(', ')}</p>
-                    <p><strong>Comentarios: </strong>{selectedBrother.Comentarios}</p>
+                    <p><strong>Comentarios: </strong>{selectedBrother.comentarios}</p>
                   </div>
                 )}
                 {action === 'delete' && (
-                  <p>¿Está seguro de que desea eliminar a <strong>{selectedBrother && `${selectedBrother.Nombre_hermano} ${selectedBrother.Apellido_hermano}`}</strong> de la lista?</p>
+                  <p>¿Está seguro de que desea eliminar a <strong>{selectedBrother && `${selectedBrother.nombre_hermano} ${selectedBrother.apellido_hermano}`}</strong> de la lista?</p>
                 )}
               </div>
               <div className="modal-footer">
@@ -161,7 +161,7 @@ const BrotherList = () => {
                 {action === 'delete' && (
                   <div>
                     <button type="button" className="btn btn-outline-secondary" onClick={closeModal}>Cancelar</button>
-                    <button type="button" className="btn btn-danger m-2" onClick={() => eliminarHermano(selectedBrother.idHermano)}>Eliminar</button>
+                    <button type="button" className="btn btn-danger m-2" onClick={() => eliminarHermano(selectedBrother.id_hermano)}>Eliminar</button>
                   </div>
                 )}
               </div>
@@ -187,4 +187,6 @@ const BrotherList = () => {
 };
 
 export default BrotherList;
+
+
 
